@@ -1,0 +1,3 @@
+apache-airflow-providers-microsoft-mssql==3.7.0
+apache-airflow-providers-postgres
+pyodbc==5.0.1

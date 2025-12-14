@@ -1,0 +1,17 @@
+[2025-12-14T01:37:07.497+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: teste_postgres_conn.testar manual__2025-12-14T01:37:06.242224+00:00 [queued]>
+[2025-12-14T01:37:07.507+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: teste_postgres_conn.testar manual__2025-12-14T01:37:06.242224+00:00 [queued]>
+[2025-12-14T01:37:07.508+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 1
+[2025-12-14T01:37:07.522+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): testar> on 2025-12-14 01:37:06.242224+00:00
+[2025-12-14T01:37:07.527+0000] {standard_task_runner.py:60} INFO - Started process 187 to run task
+[2025-12-14T01:37:07.530+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'teste_postgres_conn', 'testar', 'manual__2025-12-14T01:37:06.242224+00:00', '--job-id', '80', '--raw', '--subdir', 'DAGS_FOLDER/db_post_test.py', '--cfg-path', '/tmp/tmpfxbtngg8']
+[2025-12-14T01:37:07.532+0000] {standard_task_runner.py:88} INFO - Job 80: Subtask testar
+[2025-12-14T01:37:07.585+0000] {task_command.py:423} INFO - Running <TaskInstance: teste_postgres_conn.testar manual__2025-12-14T01:37:06.242224+00:00 [running]> on host 01244ad56c54
+[2025-12-14T01:37:07.660+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='teste_postgres_conn' AIRFLOW_CTX_TASK_ID='testar' AIRFLOW_CTX_EXECUTION_DATE='2025-12-14T01:37:06.242224+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-14T01:37:06.242224+00:00'
+[2025-12-14T01:37:08.878+0000] {base.py:83} INFO - Using connection ID 'postgres_origem' for task execution.
+[2025-12-14T01:37:10.158+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.8/site-packages/***/providers/common/sql/hooks/sql.py:221 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2025-12-14T01:37:10.604+0000] {logging_mixin.py:188} INFO -    ?column?
+0         1
+[2025-12-14T01:37:10.605+0000] {python.py:201} INFO - Done. Returned value was: None
+[2025-12-14T01:37:10.619+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=teste_postgres_conn, task_id=testar, execution_date=20251214T013706, start_date=20251214T013707, end_date=20251214T013710
+[2025-12-14T01:37:10.667+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-12-14T01:37:10.697+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check
