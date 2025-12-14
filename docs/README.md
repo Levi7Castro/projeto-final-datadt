@@ -1,90 +1,117 @@
 # 🚀 Projeto Final: Da Operação ao Preditivo – Vendas e Finanças
 
+
 ## 🎯 1. Visão Geral e Contexto de Negócio
 
-[cite_start]Este projeto de Engenharia de Dados e Machine Learning visa modernizar a tomada de decisão de uma empresa de varejo, que busca evoluir de relatórios operacionais para uma gestão baseada em dados[cite: 3].
+Este projeto de Engenharia de Dados e Machine Learning visa modernizar a tomada de decisão de uma empresa de varejo, que busca evoluir de relatórios puramente operacionais para uma gestão baseada em dados (Data-Driven).
 
-[cite_start]A solução transforma dados transacionais de **Vendas**, **Contas a Receber** e **Contas a Pagar** [cite: 5, 6, 7] [cite_start]em insights preditivos e acionáveis, focando em otimizar as áreas de marketing e cobrança[cite: 15].
+A solução transforma dados transacionais brutos de **Vendas**, **Contas a Receber** e **Contas a Pagar** em insights preditivos e acionáveis, com foco na otimização das áreas de marketing e cobrança.
 
-### [cite_start]🔑 Objetivos do Projeto [cite: 17]
+### 🔑 Objetivos Principais
 
-* [cite_start]**Pipeline ETL:** Construir um pipeline ETL em Python (extração → transformação → qualidade → carga)[cite: 18].
-* [cite_start]**Data Warehouse (DW):** Modelar um DW em esquema estrela no SQL Server, integrando as áreas Vendas e Financeiro[cite: 14, 19].
-* [cite_start]**Data Lake:** Publicar um *slice* analítico particionado em formato Parquet no Hadoop (HDFS)[cite: 20].
-* [cite_start]**Machine Learning (ML):** Treinar e avaliar modelos preditivos a partir do Data Lake para problemáticas de negócio, como **Recompra em 90 dias** (Classificação) ou **Atraso no Pagamento** (Classificação)[cite: 21, 22, 23].
+* **Pipeline ETL:** Construção de um pipeline robusto em Python (Extração → Transformação → Qualidade → Carga).
+* **Data Warehouse (DW):** Modelagem de um DW em esquema estrela (*Star Schema*) no SQL Server, integrando domínios de Vendas e Financeiro.
+* **Data Lake:** Disponibilização de um *slice* analítico particionado em formato Parquet no Hadoop (HDFS).
+* **Machine Learning (ML):** Treinamento e avaliação de modelos preditivos para resolver problemas de negócio, tais como:
+    * *Classificação:* Probabilidade de Recompra em 90 dias.
+    * *Classificação:* Risco de Atraso no Pagamento.
+
+---
 
 ## 🧱 2. Arquitetura da Solução
 
-O projeto segue um fluxo de dados completo, desde a origem transacional até o consumo analítico e preditivo. 
+O projeto implementa um fluxo de dados *End-to-End*, desde a origem transacional até o consumo analítico e preditivo.
 
-### [cite_start]2.1 Tecnologias Utilizadas [cite: 27, 28, 29, 30]
+### 2.1 Tecnologias Utilizadas
 
-| Camada | Ferramenta/Requisito | Detalhe |
+| Camada | Ferramenta | Descrição |
 | :--- | :--- | :--- |
-| **Origem** | PostgreSQL | Base de dados transacional. |
-| **Orquestração** | Apache Airflow | [cite_start]Agendamento e automação reprodutível[cite: 16]. |
-| **ETL & Data Lake** | Python (Pandas, pyodbc/SQLAlchemy, pyarrow) | Linguagem de processamento e bibliotecas de dados. |
-| **Data Warehouse** | SQL Server | [cite_start]Banco de dados analítico (instância local ou remota)[cite: 14, 28]. |
-| **Data Lake** | Hadoop/HDFS (Parquet) | [cite_start]Armazenamento de *slice* particionado pronto para ML[cite: 29]. |
-| **Machine Learning** | scikit-learn, LightGBM/XGBoost | Treinamento e avaliação de modelos preditivos. |
-| **Versionamento** | Git | [cite_start]Controle de código-fonte[cite: 31]. |
+| **Origem** | PostgreSQL | Base de dados transacional (OLTP). |
+| **Orquestração** | Apache Airflow | Agendamento e automação de DAGs reprodutíveis. |
+| **ETL & Processamento** | Python | Uso de Pandas, SQLAlchemy e PyArrow para manipulação de dados. |
+| **Data Warehouse** | SQL Server | Banco de dados analítico (OLAP). |
+| **Data Lake** | Hadoop/HDFS | Armazenamento de *slices* em Parquet particionado. |
+| **Machine Learning** | Scikit-learn, XGBoost | Treinamento, avaliação e scoring de modelos. |
+| **Versionamento** | Git | Controle de versão do código-fonte. |
 
 ### 2.2 Estrutura do Repositório
 
-projeto-final-datadt/ ├── airflow/ # Scripts e DAGs para orquestração (Agendamento no Aiflow ) │ ├── dags/ │ └── requirements.txt ├── etl/ # Scripts Python de Extração, Transformação e Carga (ETL Python ) ├── dw/ # Scripts SQL de DDL e DML para o SQL Server (Data Warehouse ) ├── lake/ # Scripts para gerar o Slice Parquet no HDFS (Data Lake ) ├── ml/ # Notebooks de modelagem (Notebook de modelagem ) e scoring ├── docs/ # Arquitetura & Documentação (Diagrama do fluxo ) ├── reports/ # Painel/Relatório final com KPIs e Plano de ação  ├── .env # Variáveis de ambiente (IGNORADO) └── README.md
+```bash
+projeto-final-datadt/
+├── airflow/            # DAGs e scripts para orquestração no Apache Airflow
+│   ├── dags/
+│   └── requirements.txt
+├── etl/                # Scripts Python (Extração, Transformação e Carga)
+├── dw/                 # Scripts SQL (DDL e DML) para o SQL Server
+├── lake/               # Scripts para geração do Slice Parquet no HDFS
+├── ml/                 # Notebooks de modelagem e scripts de scoring
+├── docs/               # Diagramas de arquitetura e documentação de projeto
+├── .env                # Variáveis de ambiente (NÃO VERSIONADO)
+
+
+-----
 
 ## 🛠️ 3. Configuração e Execução
 
-### 3.1 Credenciais da Fonte de Dados
+### 3.1 Credenciais da Fonte de Dados (Segurança)
 
-As credenciais para acesso ao PostgreSQL transacional são:
+⚠️ **ATENÇÃO:** As credenciais de acesso ao banco transacional **não devem** ser "commitadas" diretamente no código. Utilize um arquivo `.env` na raiz do projeto para armazená-las com segurança.
 
-* **Host:** `postgresql-datadt.alwaysdata.net` [cite: 9]
-* **Database:** `datadt_digital_corporativo` [cite: 10]
-* **User:** `datadt_data_analytics` [cite: 11]
-* **Password:** `DataAnalytics$100` [cite: 12]
+Exemplo de estrutura do arquivo `.env`:
 
-***REGRAS DE OURO:** Estas credenciais devem ser armazenadas em um arquivo `.env` para evitar exposição e garantir a privacidade[cite: 58].*
+```ini
+DB_HOST=postgresql-datadt.alwaysdata.net
+DB_NAME=datadt_digital_corporativo
+DB_USER=seu_usuario_aqui
+DB_PASS=sua_senha_aqui
+```
 
-### 3.2 Setup do Ambiente
+### 3.2 Setup do Ambiente Local
 
 1.  **Clone o Repositório:**
+
     ```bash
     git clone [link-do-seu-repositorio]
     cd projeto-final-datadt
     ```
 
 2.  **Crie e Ative o Ambiente Virtual:**
+
     ```bash
     python -m venv .venv
+
     # Windows
     .\.venv\Scripts\activate
-    # Linux/macOS
-    source ./.venv/bin/activate
+
+
     ```
 
 3.  **Instale as Dependências:**
+
     ```bash
     pip install -r airflow/requirements.txt
     ```
 
-### 3.3 Ordem de Execução do Pipeline (Reprodutível) [cite: 56]
+### 3.3 Ordem de Execução do Pipeline
 
-Para garantir a reprodutibilidade ("do zero ao fim"), o pipeline deve ser executado na seguinte ordem (ou orquestrado pelo Airflow):
+Para garantir a reprodutibilidade do projeto ("do zero ao fim"), execute os passos na seguinte ordem (manualmente ou via Airflow):
 
-1.  **Criação do DW:** Executar os scripts DDL em `dw/` no SQL Server.
-2.  **Carga ETL:** Rodar o script principal em `etl/` para carga no SQL Server (Staging → DW)[cite: 39].
-3.  **Exportação para o Lake:** Rodar o script em `lake/` para gerar o Parquet particionado no HDFS[cite: 40].
-4.  **Modelagem ML:** Executar o notebook/script em `ml/` para Treinar e Avaliar o modelo[cite: 44, 45].
+1.  **Criação do DW:** Executar scripts DDL localizados em `dw/` para criar as tabelas no SQL Server.
+2.  **Carga ETL:** Rodar o script principal em `etl/` para realizar a carga (Staging → DW).
+3.  **Exportação para o Lake:** Rodar o script em `lake/` para gerar os arquivos Parquet no HDFS.
+4.  **Modelagem ML:** Executar os notebooks em `ml/` para treinar e avaliar o modelo preditivo.
 
-## 📈 4. Critérios de Avaliação (Entregáveis Principais)
+-----
 
-| Entregável | Detalhes | Métricas/Qualidade |
+## 📈 4. Critérios de Avaliação e Entregáveis
+
+| Entregável | Detalhes | Métricas de Qualidade |
 | :--- | :--- | :--- |
-| **Modelagem DW** | Modelo de Dados e scripts SQL (DDL/DML) em `dw/`[cite: 37]. |
-| **Carga ETL** | Scripts Python funcionais e reprodutíveis em `etl/`[cite: 38, 56]. |
-| **Data Lake** | Slice Parquet em `hdfs/` com particionamento útil (ex.: ano/mês)[cite: 43]. |
-| **Modelo Preditivo** | Notebook/Script de modelagem em `ml/`. | Classificação: **AUC**, **PR-AUC**, **Recall@k (k=10%)**[cite: 46]. Regressão: **MAE** e **sMAPE**[cite: 47]. |
-| **Exportação ML** | Exportação do modelo treinado (`.joblib`) e pipeline de *scoring*[cite: 48]. |
-| **Documentação** | Diagrama de arquitetura em `docs/` e documentação de "assunções"[cite: 34, 55]. |
-| **Relatório Final** | KPIs, distribuição de scores e **Plano de ação**[cite: 51, 52]. |
+| **Modelagem DW** | Modelo de Dados e scripts SQL (DDL/DML) na pasta `dw/`. | Integridade referencial e normalização dimensional. |
+| **Carga ETL** | Scripts Python funcionais em `etl/`. | Reprodutibilidade e tratamento de erros. |
+| **Data Lake** | Arquivos Parquet em `hdfs/` ou simulado localmente. | Particionamento eficiente (ex: ano/mês). |
+| **Modelo Preditivo** | Notebooks de modelagem na pasta `ml/`. | **Classificação:** AUC, Recall@10%. <br> **Regressão:** MAE, sMAPE. |
+| **Exportação ML** | Modelo treinado (`.joblib`) e pipeline de scoring. | Capacidade de predição em novos dados. |
+| **Documentação** | Diagrama de arquitetura em `docs/`. | Clareza nas "assunções" de negócio. |
+| **Relatório Final** | Análise de KPIs e Plano de Ação. | Relevância dos insights para o negócio. |
+
