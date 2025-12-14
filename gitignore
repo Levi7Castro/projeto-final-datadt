@@ -1,10 +1,21 @@
-# Arquivos de log e temporários
-*.log
-*.tmp
-
-# Para Python
-__pycache__/
+# 1. Arquivos de Ambiente Virtual Python
 .venv/
+venv/
+env/
 
-# Arquivos de configurações de ambiente e IDE (muito importantes!)
+# 2. Arquivos de Cache e Compilação Python
+__pycache__/
+*.pyc
+
+# 3. Diretórios de Log e Cache do Apache Airflow (CRÍTICO!)
+airflow/logs/
+airflow/airflow.db  # O banco de dados SQLite padrão do Airflow (se estiver usando-o)
+
+# 4. Dados Gerados e Arquivos Temporários
+lake/
+
+# 5. Arquivos de Chaves/Configurações Sensíveis (SENHAS, TOKENS, etc.)
 .env
+
+# 6. Arquivos Comuns de Sistemas Operacionais e IDEs
+*.vscode/          # Configurações do VS Code (opcional, mas comum)

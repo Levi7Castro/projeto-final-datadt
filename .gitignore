@@ -1,0 +1,10 @@
+# Arquivos de log e temporários
+*.log
+*.tmp
+
+# Para Python
+__pycache__/
+.venv/
+
+# Arquivos de configurações de ambiente e IDE (muito importantes!)
+.env
